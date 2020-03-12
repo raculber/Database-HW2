@@ -1,4 +1,5 @@
 import java.sql.*;
+
 public class Database {
     private Connection connection;
     private Statement statement;
@@ -67,10 +68,10 @@ public class Database {
     }
     public void initDatabase(String Username, String Password, String SchemaName) throws SQLException {
         statement = connection.createStatement();
+        statement.executeUpdate("DELETE from POLICIES_SOLD");
         statement.executeUpdate("DELETE from CLIENTS");
         statement.executeUpdate("DELETE from AGENTS");
         statement.executeUpdate("DELETE from POLICY");
-        statement.executeUpdate("DELETE from POLICIES_SOLD");
 
         insert("CLIENTS","101,'CHRIS','DALLAS',43214");
         insert("CLIENTS","102,'OLIVIA','BOSTON',83125");

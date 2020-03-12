@@ -1,4 +1,5 @@
 import java.sql.SQLException;
+import java.sql.*;
 import java.util.Scanner;
 
 public class DBTest {
@@ -7,8 +8,8 @@ public class DBTest {
         String mysqlPassword = "aib2Oi5L";
         int choice = -1; 
         Scanner in = new Scanner(System.in);
-        Database db = new Database();  
-        db.connect(Username, mysqlPassword); 
+        Database db = new Database();
+        db.connect(Username, mysqlPassword);  
         db.initDatabase(Username, mysqlPassword, Username);
         String query;
         while (choice != 6) {
@@ -22,10 +23,11 @@ public class DBTest {
             if (choice == 1) {
                 String city;
                 System.out.println("Enter a city:");
+                in.nextLine(); 
                 city = in.nextLine();
-                query = "SELECT * FROM CLIENTS WHERE C_CITY = " + city;
+                query = "SELECT * FROM CLIENTS WHERE C_CITY = " + city + ";";
                 db.query(query);
-                query = "SELECT * FROM AGENTS WHERE A_CITY = " + city;
+                query = "SELECT * FROM AGENTS WHERE A_CITY = " + city + ";";
                 db.query(query);
             }
             else if (choice == 2) {
