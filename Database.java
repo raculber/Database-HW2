@@ -95,12 +95,16 @@ public class Database {
         insert("POLICY","304,'UNITEDHEALTH','HEALTH',7");
         insert("POLICY","305,'UNITEDCAR','VEHICLE',9");
 
-        insert("POLICIES_SOLD","401,204,106,303,'2020-01-02',2000.00");
-        insert("POLICIES_SOLD","402,201,105,305,'2019-08-11',1500.00");
-        insert("POLICIES_SOLD","403,203,106,301,'2019-09-11',3000.00");
-        insert("POLICIES_SOLD","404,207,101,305,'2019-06-21',1500.00");
-        insert("POLICIES_SOLD","405,203,104,302,'2019-11-14',4500.00");
-        insert("POLICIES_SOLD","406,207,105,305,'2019-12-25',1500.00");
+        insert("POLICIES_SOLD","401,204,106,303,STR_To_DATE('02,01,2020', '%d,%m,%Y'),2000.00");
+        insert("POLICIES_SOLD","402,201,105,305,STR_To_DATE('11,08,2019', '%d,%m,%Y'),1500.00");
+        insert("POLICIES_SOLD","403,203,106,301,STR_To_DATE('11,09,2019', '%d,%m,%Y'),3000.00");
+        insert("POLICIES_SOLD","404,207,101,305,STR_To_DATE('21,06,2019', '%d,%m,%Y'),1500.00");
+        insert("POLICIES_SOLD","405,203,104,302,STR_To_DATE('14,11,2019', '%d,%m,%Y'),4500.00");
+        insert("POLICIES_SOLD","406,207,105,305,STR_To_DATE('25,12,2019', '%d,%m,%Y'),1500.00");
+        insert("POLICIES_SOLD","407,205,103,304,STR_To_DATE('15,10,2020', '%d,%m,%Y'),5000.00");
+        insert("POLICIES_SOLD","408,204,103,304,STR_To_DATE('15,02,2020', '%d,%m,%Y'),5000.00");
+        insert("POLICIES_SOLD","409,203,103,304,STR_To_DATE('10,01,2020', '%d,%m,%Y'),5000.00");
+        insert("POLICIES_SOLD","410,202,103,303,STR_To_DATE('30,01,2020', '%d,%m,%Y'),2000.00");
     }
     public void item1() {
         Scanner in = new Scanner(System.in);
@@ -115,8 +119,9 @@ public class Database {
     }
     public void item2() {
         Scanner in = new Scanner(System.in);
-        String name, city;
-        int zip;
+        String name, city, type;
+        int zip, id;
+        double amount;
         System.out.println("Enter your name:");
         in.nextLine();
         name = in.nextLine();
@@ -127,6 +132,18 @@ public class Database {
         zip = in.nextInt();
         String values = name + "," + city + "," + zip;
         insert("CLIENTS", values);
+        System.out.println("Enter the policy type:");
+        in.nextLine();
+        type = in.nextLine();
+        String query = "SELECT * FROM AGENTS WHERE A_CITY = " + city + ";";
+        query(query);
+        query = "SELECT * FROM POLICY;";
+        query(query);
+        System.out.println("Enter the policy id:");
+        id = in.nextInt();
+        System.out.println("Enter the policy amount:");
+        amount = in.nextDouble();
+
     }
     public void item3() {
         Scanner in = new Scanner(System.in);
@@ -137,6 +154,17 @@ public class Database {
         System.out.println("Enter the agent's city:");
         in.nextLine();
         city = in.nextLine();
+        String query = "SELECT * FROM POLICIES_SOLD" + 
+        "WHERE AGENT_ID = (SELECT A_ID FROM" + 
+        "AGENTS WHERE A_NAME = " + name + ");";
+        query(query);
+        query = "SELECT NAME, TYPE, COMMISSION_PERCENTAGE " + 
+        "FROM POLICY " + 
+        "WHERE POLICY_ID IN (SELECT POLICY_ID FROM " +  
+        "POLICIES_SOLD, AGENTS " + 
+        "WHERE AGENT_ID = A_ID " + 
+        "AND A_NAME = " + name + ");"; 
+        query(query);
     }
     public void item4() {
         Scanner in = new Scanner(System.in);
@@ -162,7 +190,7 @@ public class Database {
         System.out.println("Enter the agent's zip:");
         zip = in.nextInt();
         String values = id + "," + name + "," + city + "," + zip;
-        insert("Agents", values);
+        insert("AGENTS", values);
         String query = "SELECT * FROM AGENTS WHERE A_CITY = " + city + ";";
         query(query);
     }
