@@ -21,64 +21,19 @@ public class DBTest {
             System.out.println("6) Quit");
             choice = in.nextInt();
             if (choice == 1) {
-                String city;
-                System.out.println("Enter a city:");
-                in.nextLine(); 
-                city = in.nextLine();
-                query = "SELECT * FROM CLIENTS WHERE C_CITY = " + city + ";";
-                db.query(query);
-                query = "SELECT * FROM AGENTS WHERE A_CITY = " + city + ";";
-                db.query(query);
+                db.item1();
             }
             else if (choice == 2) {
-                String name, city;
-                int zip;
-                System.out.println("Enter your name:");
-                in.nextLine();
-                name = in.nextLine();
-                System.out.println("Enter your city:");
-                in.nextLine();
-                city = in.nextLine();
-                System.out.println("Enter your zip code:");
-                zip = in.nextInt();
-                String values = name + "," + city + "," + zip;
-                db.insert("CLIENTS", values);
+                db.item2();
             }
             else if (choice == 3) {
-                String name, city;
-                System.out.println("Enter the agent's name:");
-                in.nextLine();
-                name = in.nextLine();
-                System.out.println("Enter the agent's city:");
-                in.nextLine();
-                city = in.nextLine();
+                db.item3();
             }
             else if (choice == 4) {
-                query = "SELECT * FROM POLICIES_SOLD;";
-                int id;
-                System.out.println("Enter the policy id:");
-                id = in.nextInt();
-                query = "DELETE FROM POLICIES_SOLD WHERE POLICY_ID =" + id + ";";
-                db.query(query);
+                db.item4();
             }
             else if (choice == 5) {
-                int id, zip;
-                String name, city;
-                System.out.println("Enter the agent's ID:");
-                id = in.nextInt();
-                System.out.println("Enter the agent's name:");
-                in.nextLine();
-                name = in.nextLine();
-                System.out.println("Enter the agent's city:");
-                in.nextLine();
-                city = in.nextLine();
-                System.out.println("Enter the agent's zip:");
-                zip = in.nextInt();
-                String values = id + "," + name + "," + city + "," + zip;
-                db.insert("Agents", values);
-                query = "SELECT * FROM AGENTS WHERE A_CITY = " + city + ";";
-                db.query(query);
-
+                db.item5();
             }
             else if (choice == 6) {
                 db.disconnect();

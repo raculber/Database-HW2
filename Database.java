@@ -1,4 +1,5 @@
 import java.sql.*;
+import java.util.Scanner;
 
 public class Database {
     private Connection connection;
@@ -100,5 +101,69 @@ public class Database {
         insert("POLICIES_SOLD","404,207,101,305,'2019-06-21',1500.00");
         insert("POLICIES_SOLD","405,203,104,302,'2019-11-14',4500.00");
         insert("POLICIES_SOLD","406,207,105,305,'2019-12-25',1500.00");
+    }
+    public void item1() {
+        Scanner in = new Scanner(System.in);
+        String city;
+        System.out.println("Enter a city:");
+        in.nextLine(); 
+        city = in.nextLine();
+        String query = "SELECT * FROM CLIENTS WHERE C_CITY = " + city + ";";
+        query(query);
+        query = "SELECT * FROM AGENTS WHERE A_CITY = " + city + ";";
+        query(query);
+    }
+    public void item2() {
+        Scanner in = new Scanner(System.in);
+        String name, city;
+        int zip;
+        System.out.println("Enter your name:");
+        in.nextLine();
+        name = in.nextLine();
+        System.out.println("Enter your city:");
+        in.nextLine();
+        city = in.nextLine();
+        System.out.println("Enter your zip code:");
+        zip = in.nextInt();
+        String values = name + "," + city + "," + zip;
+        insert("CLIENTS", values);
+    }
+    public void item3() {
+        Scanner in = new Scanner(System.in);
+        String name, city;
+        System.out.println("Enter the agent's name:");
+        in.nextLine();
+        name = in.nextLine();
+        System.out.println("Enter the agent's city:");
+        in.nextLine();
+        city = in.nextLine();
+    }
+    public void item4() {
+        Scanner in = new Scanner(System.in);
+        String query = "SELECT * FROM POLICIES_SOLD;";
+        int id;
+        System.out.println("Enter the policy id:");
+        id = in.nextInt();
+        query = "DELETE FROM POLICIES_SOLD WHERE POLICY_ID =" + id + ";";
+        query(query);
+    }
+    public void item5() {
+        Scanner in = new Scanner(System.in);
+        int id, zip;
+        String name, city;
+        System.out.println("Enter the agent's ID:");
+        id = in.nextInt();
+        System.out.println("Enter the agent's name:");
+        in.nextLine();
+        name = in.nextLine();
+        System.out.println("Enter the agent's city:");
+        in.nextLine();
+        city = in.nextLine();
+        System.out.println("Enter the agent's zip:");
+        zip = in.nextInt();
+        String values = id + "," + name + "," + city + "," + zip;
+        insert("Agents", values);
+        String query = "SELECT * FROM AGENTS WHERE A_CITY = " + city + ";";
+        query(query);
     }
 }
