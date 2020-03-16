@@ -12,6 +12,7 @@ public class DBTest {
         db.connect(Username, mysqlPassword);  
         db.initDatabase(Username, mysqlPassword, Username);
         String query;
+        db.query("SELECT * FROM CLIENTS;");
         while (choice != 6) {
             System.out.println("1) Find all agents and clients in a given city");
             System.out.println("2) Add a new client, then purchase an available policy from a particular agent");

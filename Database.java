@@ -110,37 +110,34 @@ public class Database {
         Scanner in = new Scanner(System.in);
         String city;
         System.out.println("Enter a city:");
-        in.nextLine(); 
         city = in.nextLine();
-        String query = "SELECT * FROM CLIENTS WHERE C_CITY = " + city + ";";
+        String query = "SELECT * FROM CLIENTS WHERE C_CITY = \'" + city + "\';";
+        System.out.println(query);
         query(query);
-        query = "SELECT * FROM AGENTS WHERE A_CITY = " + city + ";";
+        query = "SELECT * FROM AGENTS WHERE A_CITY = \'" + city + "\';";
         query(query);
     }
     public void item2() {
         Scanner in = new Scanner(System.in);
         String name, city, type;
-        int zip, id;
+        int zip, policyId;
         double amount;
         System.out.println("Enter your name:");
-        in.nextLine();
         name = in.nextLine();
         System.out.println("Enter your city:");
-        in.nextLine();
         city = in.nextLine();
         System.out.println("Enter your zip code:");
         zip = in.nextInt();
-        String values = name + "," + city + "," + zip;
+        String values = name + ",\'" + city + "\'," + zip;
         insert("CLIENTS", values);
         System.out.println("Enter the policy type:");
-        in.nextLine();
         type = in.nextLine();
-        String query = "SELECT * FROM AGENTS WHERE A_CITY = " + city + ";";
+        String query = "SELECT * FROM AGENTS WHERE A_CITY = \'" + city + "\';";
         query(query);
         query = "SELECT * FROM POLICY;";
         query(query);
         System.out.println("Enter the policy id:");
-        id = in.nextInt();
+        policyId = in.nextInt();
         System.out.println("Enter the policy amount:");
         amount = in.nextDouble();
 
@@ -149,21 +146,19 @@ public class Database {
         Scanner in = new Scanner(System.in);
         String name, city;
         System.out.println("Enter the agent's name:");
-        in.nextLine();
         name = in.nextLine();
         System.out.println("Enter the agent's city:");
-        in.nextLine();
         city = in.nextLine();
         String query = "SELECT * FROM POLICIES_SOLD" + 
         "WHERE AGENT_ID = (SELECT A_ID FROM" + 
-        "AGENTS WHERE A_NAME = " + name + ");";
+        "AGENTS WHERE A_NAME = \'" + name + "\');";
         query(query);
         query = "SELECT NAME, TYPE, COMMISSION_PERCENTAGE " + 
         "FROM POLICY " + 
         "WHERE POLICY_ID IN (SELECT POLICY_ID FROM " +  
         "POLICIES_SOLD, AGENTS " + 
         "WHERE AGENT_ID = A_ID " + 
-        "AND A_NAME = " + name + ");"; 
+        "AND A_NAME = \'" + name + "\');"; 
         query(query);
     }
     public void item4() {
@@ -172,7 +167,7 @@ public class Database {
         int id;
         System.out.println("Enter the policy id:");
         id = in.nextInt();
-        query = "DELETE FROM POLICIES_SOLD WHERE POLICY_ID =" + id + ";";
+        query = "DELETE FROM POLICIES_SOLD WHERE POLICY_ID = " + id + ";";
         query(query);
     }
     public void item5() {
@@ -182,16 +177,14 @@ public class Database {
         System.out.println("Enter the agent's ID:");
         id = in.nextInt();
         System.out.println("Enter the agent's name:");
-        in.nextLine();
         name = in.nextLine();
         System.out.println("Enter the agent's city:");
-        in.nextLine();
         city = in.nextLine();
         System.out.println("Enter the agent's zip:");
         zip = in.nextInt();
-        String values = id + "," + name + "," + city + "," + zip;
+        String values = id + ",\'" + name + "\',\'" + city + "\'," + zip;
         insert("AGENTS", values);
-        String query = "SELECT * FROM AGENTS WHERE A_CITY = " + city + ";";
+        String query = "SELECT * FROM AGENTS WHERE A_CITY = \'" + city + "\';";
         query(query);
     }
 }
