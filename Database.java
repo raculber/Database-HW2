@@ -117,22 +117,43 @@ public class Database {
         query = "SELECT * FROM AGENTS WHERE A_CITY = \'" + city + "\';";
         query(query);
     }
-    public void item2() {
+    public void item2() throws SQLException {
         Scanner in = new Scanner(System.in);
         String name, city, type;
         int zip, policyId;
         double amount;
+        System.out.println("Client table before insertion:");
+        query("SELECT * FROM CLIENTS;");
         System.out.println("Enter your name:");
         name = in.nextLine();
         System.out.println("Enter your city:");
         city = in.nextLine();
         System.out.println("Enter your zip code:");
         zip = in.nextInt();
-        String values = name + ",\'" + city + "\'," + zip;
-        insert("CLIENTS", values);
+        String values = "\'" + name + "\',\'" + city + "\'," + zip;
+        try {
+            statement.executeUpdate("INSERT INTO CLIENTS (C_NAME, C_CITY, C_ZIP) VALUES (" + values + ");"); 
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+        }
+        System.out.println("Client table after insertion:");
+        query("SELECT * FROM CLIENTS;"); 
         System.out.println("Enter the policy type:");
+        in.nextLine();
         type = in.nextLine();
+        int a_id = 0;
         String query = "SELECT * FROM AGENTS WHERE A_CITY = \'" + city + "\';";
+        try {
+            ResultSet resultSet = statement.executeQuery(query);
+            while (resultSet.next()) {
+                a_id = resultSet.getInt("A_ID");
+            }
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+        }
+        System.out.println("Agent id: " + a_id);
         query(query);
         query = "SELECT * FROM POLICY;";
         query(query);
@@ -140,7 +161,6 @@ public class Database {
         policyId = in.nextInt();
         System.out.println("Enter the policy amount:");
         amount = in.nextDouble();
-
     }
     public void item3() {
         Scanner in = new Scanner(System.in);
