@@ -187,4 +187,7 @@ public class Database {
         String query = "SELECT * FROM AGENTS WHERE A_CITY = \'" + city + "\';";
         query(query);
     }
+    public void item6() throws SQLException {
+        disconnect();
+    }
 }
