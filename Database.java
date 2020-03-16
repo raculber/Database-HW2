@@ -153,14 +153,40 @@ public class Database {
         catch (SQLException e) {
             e.printStackTrace();
         }
-        System.out.println("Agent id: " + a_id);
         query(query);
+        int c_id = 0;
+        try {
+            ResultSet resultSet = statement.executeQuery("SELECT * FROM CLIENTS;");
+            while (resultSet.next()) {
+                c_id = resultSet.getInt("C_ID");
+            }
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+        }
         query = "SELECT * FROM POLICY;";
         query(query);
         System.out.println("Enter the policy id:");
         policyId = in.nextInt();
         System.out.println("Enter the policy amount:");
         amount = in.nextDouble();
+        System.out.println("POLICIES_SOLD before insertion:");
+        query("SELECT * FROM POLICIES_SOLD;");
+        try {
+            System.out.println("INSERT INTO POLICIES_SOLD " + 
+            "(AGENT_ID, CLIENT_ID, POLICY_ID, DATE_PURCHASED, AMOUNT) VALUES (" + a_id
+             + "," + c_id + "," + policyId + "," + "STR_To_DATE('15,02,2020', '%d,%m,%Y')" +
+             "," + amount + ");");
+            statement.executeUpdate("INSERT INTO POLICIES_SOLD " + 
+            "(AGENT_ID, CLIENT_ID, POLICY_ID, DATE_PURCHASED, AMOUNT) VALUES (" + a_id
+             + "," + c_id + "," + policyId + "," + "STR_To_DATE('15,02,2020', '%d,%m,%Y')" +
+             + amount + ");"); 
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+        }
+        System.out.println("POLICIES_SOLD after insertion:");
+        query("SELECT * FROM POLICIES_SOLD;");
     }
     public void item3() {
         Scanner in = new Scanner(System.in);
@@ -187,8 +213,10 @@ public class Database {
         int id;
         System.out.println("Enter the policy id:");
         id = in.nextInt();
-        query = "DELETE FROM POLICIES_SOLD WHERE POLICY_ID = " + id + ";";
+        query = "DELETE FROM POLICIES_SOLD WHERE PURCHASE_ID = " + id + ";";
         query(query);
+        System.out.println("POLICIES_SOLD after deletion:");
+        query("SELECT * FROM POLICIES_SOLD");
     }
     public void item5() {
         Scanner in = new Scanner(System.in);
@@ -202,8 +230,11 @@ public class Database {
         city = in.nextLine();
         System.out.println("Enter the agent's zip:");
         zip = in.nextInt();
+        System.out.println("Agent's in city before insertion:");
+        query("SELECT * FROM AGENTS WHERE A_CITY = \'" + city + "\';");
         String values = id + ",\'" + name + "\',\'" + city + "\'," + zip;
         insert("AGENTS", values);
+        System.out.println("Agent's in city after insertion:");
         String query = "SELECT * FROM AGENTS WHERE A_CITY = \'" + city + "\';";
         query(query);
     }
