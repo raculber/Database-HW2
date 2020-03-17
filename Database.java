@@ -115,11 +115,11 @@ public class Database {
         insert("POLICIES_SOLD", "409,203,103,304,STR_To_DATE('10,01,2020', '%d,%m,%Y'),5000.00");
         insert("POLICIES_SOLD", "410,202,103,303,STR_To_DATE('30,01,2020', '%d,%m,%Y'),2000.00");
     }
-
+    //Find all exisiting agents in a given city
     public void item1() {
         Scanner in = new Scanner(System.in);
         String city;
-        System.out.println("Enter a city:");
+        System.out.println("Please enter a city: ");
         try {
             city = in.nextLine();
         } catch (InputMismatchException e) {
@@ -131,7 +131,7 @@ public class Database {
         query = "SELECT * FROM AGENTS WHERE A_CITY = \'" + city + "\';";
         query(query);
     }
-
+    //Purchase an avaiable policy from a particular agent
     public void item2() throws SQLException {
         Scanner in = new Scanner(System.in);
         String name, city, type;
@@ -139,21 +139,21 @@ public class Database {
         double amount;
         System.out.println("Client table before insertion:");
         query("SELECT * FROM CLIENTS;");
-        System.out.println("Enter your name:");
+        System.out.println("Please enter your name: ");
         try {
             name = in.nextLine();
         } catch (InputMismatchException e) {
             System.out.println("Invalid input");
             return;
         }
-        System.out.println("Enter your city:");
+        System.out.println("Please enter your city: ");
         try {
             city = in.nextLine();
         } catch (InputMismatchException e) {
             System.out.println("Invalid input");
             return;
         }
-        System.out.println("Enter your zip code:");
+        System.out.println("Please enter your zip code: ");
         try {
             zip = in.nextInt();
         } catch (InputMismatchException e) {
@@ -168,7 +168,7 @@ public class Database {
         }
         System.out.println("Client table after insertion:");
         query("SELECT * FROM CLIENTS;");
-        System.out.println("Enter the policy type:");
+        System.out.println("Please enter the policy type: ");
         in.nextLine();
         type = in.nextLine();
         int a_id = 0;
@@ -193,14 +193,14 @@ public class Database {
         }
         query = "SELECT * FROM POLICY;";
         query(query);
-        System.out.println("Enter the policy id:");
+        System.out.println("Please enter the policy id: ");
         try {
             policyId = in.nextInt();
         } catch (InputMismatchException e) {
             System.out.println("Invalid input");
             return;
         }
-        System.out.println("Enter the policy amount:");
+        System.out.println("Please enter the policy amount: ");
         try {
             amount = in.nextDouble();
         } catch (InputMismatchException e) {
@@ -222,10 +222,11 @@ public class Database {
         System.out.println("POLICIES_SOLD after insertion:");
         query("SELECT * FROM POLICIES_SOLD;");
     }
+    //List all policies sold by a particular agent
     public void item3() {
         Scanner in = new Scanner(System.in);
         String name, city;
-        System.out.println("Enter the agent's name:");
+        System.out.println("Please enter the agent's name: ");
         try {
             name = in.nextLine();
         }
@@ -233,7 +234,7 @@ public class Database {
             System.out.println("Invalid input");
             return;
         }
-        System.out.println("Enter the agent's city:");
+        System.out.println("Please enter the agent's city: ");
         try {
             city = in.nextLine();
         }
@@ -253,12 +254,13 @@ public class Database {
         "AND A_NAME = \'" + name + "\');"; 
         query(query);
     }
+    //cancel a policy
     public void item4() throws SQLException {
         Scanner in = new Scanner(System.in);
         String query = "SELECT * FROM POLICIES_SOLD;";
         query(query);
         int id;
-        System.out.println("Enter the purchase id:");
+        System.out.println("Please enter the purchase id: ");
         try {
             id = in.nextInt();
         }
@@ -276,11 +278,12 @@ public class Database {
         System.out.println("POLICIES_SOLD after deletion:");
         query("SELECT * FROM POLICIES_SOLD");
     }
+    //Adding new agent for a city
     public void item5() {
         Scanner in = new Scanner(System.in);
         int id, zip;
         String name, city;
-        System.out.println("Enter the agent's ID:");
+        System.out.println("Please enter the agent's ID: ");
         try {
             id = in.nextInt();
         }
@@ -288,7 +291,7 @@ public class Database {
             System.out.println("Invalid input");
             return;
         }
-        System.out.println("Enter the agent's name:");
+        System.out.println("Please enter the agent's name: ");
         in.nextLine();
         try {
             name = in.nextLine();
@@ -297,7 +300,7 @@ public class Database {
             System.out.println("Invalid input");
             return;
         }
-        System.out.println("Enter the agent's city:");
+        System.out.println("Please enter the agent's city: ");
         try {
             city = in.nextLine();
         }
@@ -305,7 +308,7 @@ public class Database {
             System.out.println("Invalid input");
             return; 
         }
-        System.out.println("Enter the agent's zip:");
+        System.out.println("Please enter the agent's zip: ");
         try {
             zip = in.nextInt();
         }
@@ -313,7 +316,7 @@ public class Database {
             System.out.println("Invalid input");
             return;
         }
-        System.out.println("Agent's in city before insertion:");
+        System.out.println("Agent's in city before insertion: ");
         query("SELECT * FROM AGENTS WHERE A_CITY = \'" + city + "\';");
         String values = id + ",\'" + name + "\',\'" + city + "\'," + zip;
         insert("AGENTS", values);
@@ -321,6 +324,7 @@ public class Database {
         String query = "SELECT * FROM AGENTS WHERE A_CITY = \'" + city + "\';";
         query(query);
     }
+    //Quit
     public void item6() throws SQLException {
         disconnect();
     }
