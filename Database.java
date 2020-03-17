@@ -1,4 +1,5 @@
 import java.sql.*;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class Database {
@@ -110,7 +111,13 @@ public class Database {
         Scanner in = new Scanner(System.in);
         String city;
         System.out.println("Enter a city:");
-        city = in.nextLine();
+        try {
+            city = in.nextLine();
+        }
+        catch (InputMismatchException e) {
+            System.out.println("Invalid input");
+            return;
+        }
         String query = "SELECT * FROM CLIENTS WHERE C_CITY = \'" + city + "\';";
         System.out.println(query);
         query(query);
@@ -125,11 +132,29 @@ public class Database {
         System.out.println("Client table before insertion:");
         query("SELECT * FROM CLIENTS;");
         System.out.println("Enter your name:");
-        name = in.nextLine();
+        try {
+            name = in.nextLine();
+        }
+        catch (InputMismatchException e) {
+            System.out.println("Invalid input");
+            return;
+        }
         System.out.println("Enter your city:");
-        city = in.nextLine();
+        try {
+            city = in.nextLine();
+        }
+        catch (InputMismatchException e) {
+            System.out.println("Invalid input");
+            return;
+        }
         System.out.println("Enter your zip code:");
-        zip = in.nextInt();
+        try {
+            zip = in.nextInt();
+        }
+        catch (InputMismatchException e) {
+            System.out.println("Invalid input");
+            return;
+        }
         String values = "\'" + name + "\',\'" + city + "\'," + zip;
         try {
             statement.executeUpdate("INSERT INTO CLIENTS (C_NAME, C_CITY, C_ZIP) VALUES (" + values + ");"); 
@@ -167,20 +192,28 @@ public class Database {
         query = "SELECT * FROM POLICY;";
         query(query);
         System.out.println("Enter the policy id:");
-        policyId = in.nextInt();
+        try {
+            policyId = in.nextInt();
+        }
+        catch (InputMismatchException e) {
+            System.out.println("Invalid input");
+            return;
+        }
         System.out.println("Enter the policy amount:");
-        amount = in.nextDouble();
+        try {
+            amount = in.nextDouble();
+        }
+        catch (InputMismatchException e) {
+            System.out.println("Invalid input");
+            return;
+        }
         System.out.println("POLICIES_SOLD before insertion:");
         query("SELECT * FROM POLICIES_SOLD;");
         try {
-            System.out.println("INSERT INTO POLICIES_SOLD " + 
-            "(AGENT_ID, CLIENT_ID, POLICY_ID, DATE_PURCHASED, AMOUNT) VALUES (" + a_id
-             + "," + c_id + "," + policyId + "," + "STR_To_DATE('15,02,2020', '%d,%m,%Y')" +
-             "," + amount + ");");
             statement.executeUpdate("INSERT INTO POLICIES_SOLD " + 
             "(AGENT_ID, CLIENT_ID, POLICY_ID, DATE_PURCHASED, AMOUNT) VALUES (" + a_id
              + "," + c_id + "," + policyId + "," + "STR_To_DATE('15,02,2020', '%d,%m,%Y')" +
-             + amount + ");"); 
+             "," + String.format("%.2f", amount) + ");"); 
         }
         catch (SQLException e) {
             e.printStackTrace();
@@ -192,9 +225,21 @@ public class Database {
         Scanner in = new Scanner(System.in);
         String name, city;
         System.out.println("Enter the agent's name:");
-        name = in.nextLine();
+        try {
+            name = in.nextLine();
+        }
+        catch (InputMismatchException e) {
+            System.out.println("Invalid input");
+            return;
+        }
         System.out.println("Enter the agent's city:");
-        city = in.nextLine();
+        try {
+            city = in.nextLine();
+        }
+        catch (InputMismatchException e) {
+            System.out.println("Invalid input");
+            return;
+        }
         String query = "SELECT * FROM POLICIES_SOLD" + 
         "WHERE AGENT_ID = (SELECT A_ID FROM" + 
         "AGENTS WHERE A_NAME = \'" + name + "\');";
@@ -212,7 +257,13 @@ public class Database {
         String query = "SELECT * FROM POLICIES_SOLD;";
         int id;
         System.out.println("Enter the policy id:");
-        id = in.nextInt();
+        try {
+            id = in.nextInt();
+        }
+        catch (InputMismatchException e) {
+            System.out.println("Invalid input");
+            return;
+        }
         query = "DELETE FROM POLICIES_SOLD WHERE PURCHASE_ID = " + id + ";";
         query(query);
         System.out.println("POLICIES_SOLD after deletion:");
@@ -223,13 +274,37 @@ public class Database {
         int id, zip;
         String name, city;
         System.out.println("Enter the agent's ID:");
-        id = in.nextInt();
+        try {
+            id = in.nextInt();
+        }
+        catch (InputMismatchException e) {
+            System.out.println("Invalid input");
+            return;
+        }
         System.out.println("Enter the agent's name:");
-        name = in.nextLine();
+        try {
+            name = in.nextLine();
+        }
+        catch (InputMismatchException e) {
+            System.out.println("Invalid input");
+            return;
+        }
         System.out.println("Enter the agent's city:");
-        city = in.nextLine();
+        try {
+            city = in.nextLine();
+        }
+        catch (InputMismatchException e) {
+            System.out.println("Invalid input");
+            return;
+        }
         System.out.println("Enter the agent's zip:");
-        zip = in.nextInt();
+        try {
+            zip = in.nextInt();
+        }
+        catch (InputMismatchException e) {
+            System.out.println("Invalid input");
+            return;
+        }
         System.out.println("Agent's in city before insertion:");
         query("SELECT * FROM AGENTS WHERE A_CITY = \'" + city + "\';");
         String values = id + ",\'" + name + "\',\'" + city + "\'," + zip;
