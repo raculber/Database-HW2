@@ -1,38 +1,42 @@
 import java.sql.*;
+import java.time.LocalDate;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class Database {
     private Connection connection;
     private Statement statement;
+
     public Database() {
         connection = null;
         statement = null;
     }
+
     public void connect(String Username, String mysqlPassword) throws SQLException {
         try {
-            connection = DriverManager.getConnection("jdbc:mysql://localhost/" + Username + "?" +
-            "user=" + Username + "&password=" + mysqlPassword);
-        }
-        catch(Exception e) {
+            connection = DriverManager.getConnection(
+                    "jdbc:mysql://localhost/" + Username + "?" + "user=" + Username + "&password=" + mysqlPassword);
+        } catch (Exception e) {
             throw e;
         }
     }
+
     public void disconnect() throws SQLException {
         connection.close();
         statement.close();
     }
+
     public void query(String q) {
         try {
             ResultSet resultSet = statement.executeQuery(q);
             System.out.println("\n---------------------------------");
             System.out.println("Query: \n" + q + "\n\nResult: ");
             print(resultSet);
-        }
-        catch (SQLException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
     }
+
     public void print(ResultSet resultSet) throws SQLException {
         ResultSetMetaData metaData = resultSet.getMetaData();
         int numColumns = metaData.getColumnCount();
@@ -40,6 +44,7 @@ public class Database {
         printHeader(metaData, numColumns);
         printRecords(resultSet, numColumns);
     }
+
     public void printHeader(ResultSetMetaData metaData, int numColumns) throws SQLException {
         for (int i = 1; i <= numColumns; i++) {
             if (i > 1)
@@ -48,6 +53,7 @@ public class Database {
         }
         System.out.println();
     }
+
     public void printRecords(ResultSet resultSet, int numColumns) throws SQLException {
         String columnValue;
         while (resultSet.next()) {
@@ -60,14 +66,16 @@ public class Database {
             System.out.println("");
         }
     }
+
     public void insert(String table, String values) {
-        String query = "INSERT into " + table + " values (" + values + ")" ;
+        String query = "INSERT into " + table + " values (" + values + ")";
         try {
             statement.executeUpdate(query);
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
+
     public void initDatabase(String Username, String Password, String SchemaName) throws SQLException {
         statement = connection.createStatement();
         statement.executeUpdate("DELETE from POLICIES_SOLD");
@@ -75,46 +83,46 @@ public class Database {
         statement.executeUpdate("DELETE from AGENTS");
         statement.executeUpdate("DELETE from POLICY");
 
-        insert("CLIENTS","101,'CHRIS','DALLAS',43214");
-        insert("CLIENTS","102,'OLIVIA','BOSTON',83125");
-        insert("CLIENTS","103,'ETHAN','FAYETTEVILLE',72701");
-        insert("CLIENTS","104,'DANIEL','NEWYORK',53421");
-        insert("CLIENTS","105,'TAYLOR','ROGERS',78291");
-        insert("CLIENTS","106,'CLAIRE','PHOENIX',85011");
+        insert("CLIENTS", "101,'CHRIS','DALLAS',43214");
+        insert("CLIENTS", "102,'OLIVIA','BOSTON',83125");
+        insert("CLIENTS", "103,'ETHAN','FAYETTEVILLE',72701");
+        insert("CLIENTS", "104,'DANIEL','NEWYORK',53421");
+        insert("CLIENTS", "105,'TAYLOR','ROGERS',78291");
+        insert("CLIENTS", "106,'CLAIRE','PHOENIX',85011");
 
-        insert("AGENTS","201,'ANDREW','DALLAS',43214");
-        insert("AGENTS","202,'PHILIP','PHOENIX',85011");
-        insert("AGENTS","203,'JERRY','BOSTON',83125");
-        insert("AGENTS","204,'BRYAN','ROGERS',78291");
-        insert("AGENTS","205,'TOMMY','DALLAS',43214");
-        insert("AGENTS","206,'BRANT','FAYETTEVILLE',72701");
-        insert("AGENTS","207,'SMITH','ROGERS',78291");
+        insert("AGENTS", "201,'ANDREW','DALLAS',43214");
+        insert("AGENTS", "202,'PHILIP','PHOENIX',85011");
+        insert("AGENTS", "203,'JERRY','BOSTON',83125");
+        insert("AGENTS", "204,'BRYAN','ROGERS',78291");
+        insert("AGENTS", "205,'TOMMY','DALLAS',43214");
+        insert("AGENTS", "206,'BRANT','FAYETTEVILLE',72701");
+        insert("AGENTS", "207,'SMITH','ROGERS',78291");
 
-        insert("POLICY","301,'CIGNAHEALTH','DENTAL',5");
-        insert("POLICY","302,'GOLD','LIFE',8");
-        insert("POLICY","303,'WELLCARE','HOME',10");
-        insert("POLICY","304,'UNITEDHEALTH','HEALTH',7");
-        insert("POLICY","305,'UNITEDCAR','VEHICLE',9");
+        insert("POLICY", "301,'CIGNAHEALTH','DENTAL',5");
+        insert("POLICY", "302,'GOLD','LIFE',8");
+        insert("POLICY", "303,'WELLCARE','HOME',10");
+        insert("POLICY", "304,'UNITEDHEALTH','HEALTH',7");
+        insert("POLICY", "305,'UNITEDCAR','VEHICLE',9");
 
-        insert("POLICIES_SOLD","401,204,106,303,STR_To_DATE('02,01,2020', '%d,%m,%Y'),2000.00");
-        insert("POLICIES_SOLD","402,201,105,305,STR_To_DATE('11,08,2019', '%d,%m,%Y'),1500.00");
-        insert("POLICIES_SOLD","403,203,106,301,STR_To_DATE('11,09,2019', '%d,%m,%Y'),3000.00");
-        insert("POLICIES_SOLD","404,207,101,305,STR_To_DATE('21,06,2019', '%d,%m,%Y'),1500.00");
-        insert("POLICIES_SOLD","405,203,104,302,STR_To_DATE('14,11,2019', '%d,%m,%Y'),4500.00");
-        insert("POLICIES_SOLD","406,207,105,305,STR_To_DATE('25,12,2019', '%d,%m,%Y'),1500.00");
-        insert("POLICIES_SOLD","407,205,103,304,STR_To_DATE('15,10,2020', '%d,%m,%Y'),5000.00");
-        insert("POLICIES_SOLD","408,204,103,304,STR_To_DATE('15,02,2020', '%d,%m,%Y'),5000.00");
-        insert("POLICIES_SOLD","409,203,103,304,STR_To_DATE('10,01,2020', '%d,%m,%Y'),5000.00");
-        insert("POLICIES_SOLD","410,202,103,303,STR_To_DATE('30,01,2020', '%d,%m,%Y'),2000.00");
+        insert("POLICIES_SOLD", "401,204,106,303,STR_To_DATE('02,01,2020', '%d,%m,%Y'),2000.00");
+        insert("POLICIES_SOLD", "402,201,105,305,STR_To_DATE('11,08,2019', '%d,%m,%Y'),1500.00");
+        insert("POLICIES_SOLD", "403,203,106,301,STR_To_DATE('11,09,2019', '%d,%m,%Y'),3000.00");
+        insert("POLICIES_SOLD", "404,207,101,305,STR_To_DATE('21,06,2019', '%d,%m,%Y'),1500.00");
+        insert("POLICIES_SOLD", "405,203,104,302,STR_To_DATE('14,11,2019', '%d,%m,%Y'),4500.00");
+        insert("POLICIES_SOLD", "406,207,105,305,STR_To_DATE('25,12,2019', '%d,%m,%Y'),1500.00");
+        insert("POLICIES_SOLD", "407,205,103,304,STR_To_DATE('15,10,2020', '%d,%m,%Y'),5000.00");
+        insert("POLICIES_SOLD", "408,204,103,304,STR_To_DATE('15,02,2020', '%d,%m,%Y'),5000.00");
+        insert("POLICIES_SOLD", "409,203,103,304,STR_To_DATE('10,01,2020', '%d,%m,%Y'),5000.00");
+        insert("POLICIES_SOLD", "410,202,103,303,STR_To_DATE('30,01,2020', '%d,%m,%Y'),2000.00");
     }
+
     public void item1() {
         Scanner in = new Scanner(System.in);
         String city;
         System.out.println("Enter a city:");
         try {
             city = in.nextLine();
-        }
-        catch (InputMismatchException e) {
+        } catch (InputMismatchException e) {
             System.out.println("Invalid input");
             return;
         }
@@ -123,6 +131,7 @@ public class Database {
         query = "SELECT * FROM AGENTS WHERE A_CITY = \'" + city + "\';";
         query(query);
     }
+
     public void item2() throws SQLException {
         Scanner in = new Scanner(System.in);
         String name, city, type;
@@ -133,36 +142,32 @@ public class Database {
         System.out.println("Enter your name:");
         try {
             name = in.nextLine();
-        }
-        catch (InputMismatchException e) {
+        } catch (InputMismatchException e) {
             System.out.println("Invalid input");
             return;
         }
         System.out.println("Enter your city:");
         try {
             city = in.nextLine();
-        }
-        catch (InputMismatchException e) {
+        } catch (InputMismatchException e) {
             System.out.println("Invalid input");
             return;
         }
         System.out.println("Enter your zip code:");
         try {
             zip = in.nextInt();
-        }
-        catch (InputMismatchException e) {
+        } catch (InputMismatchException e) {
             System.out.println("Invalid input");
             return;
         }
         String values = "\'" + name + "\',\'" + city + "\'," + zip;
         try {
-            statement.executeUpdate("INSERT INTO CLIENTS (C_NAME, C_CITY, C_ZIP) VALUES (" + values + ");"); 
-        }
-        catch (SQLException e) {
+            statement.executeUpdate("INSERT INTO CLIENTS (C_NAME, C_CITY, C_ZIP) VALUES (" + values + ");");
+        } catch (SQLException e) {
             e.printStackTrace();
         }
         System.out.println("Client table after insertion:");
-        query("SELECT * FROM CLIENTS;"); 
+        query("SELECT * FROM CLIENTS;");
         System.out.println("Enter the policy type:");
         in.nextLine();
         type = in.nextLine();
@@ -173,8 +178,7 @@ public class Database {
             while (resultSet.next()) {
                 a_id = resultSet.getInt("A_ID");
             }
-        }
-        catch (SQLException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
         query(query);
@@ -184,8 +188,7 @@ public class Database {
             while (resultSet.next()) {
                 c_id = resultSet.getInt("C_ID");
             }
-        }
-        catch (SQLException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
         query = "SELECT * FROM POLICY;";
@@ -193,26 +196,25 @@ public class Database {
         System.out.println("Enter the policy id:");
         try {
             policyId = in.nextInt();
-        }
-        catch (InputMismatchException e) {
+        } catch (InputMismatchException e) {
             System.out.println("Invalid input");
             return;
         }
         System.out.println("Enter the policy amount:");
         try {
             amount = in.nextDouble();
-        }
-        catch (InputMismatchException e) {
+        } catch (InputMismatchException e) {
             System.out.println("Invalid input");
             return;
         }
         System.out.println("POLICIES_SOLD before insertion:");
         query("SELECT * FROM POLICIES_SOLD;");
         try {
+            LocalDate date = java.time.LocalDate.now();
             statement.executeUpdate("INSERT INTO POLICIES_SOLD " + 
             "(AGENT_ID, CLIENT_ID, POLICY_ID, DATE_PURCHASED, AMOUNT) VALUES (" + a_id
-             + "," + c_id + "," + policyId + "," + "STR_To_DATE('15,02,2020', '%d,%m,%Y')" +
-             "," + String.format("%.2f", amount) + ");"); 
+             + "," + c_id + "," + policyId + ",\'" + date +
+             "\'," + String.format("%.2f", amount) + ");"); 
         }
         catch (SQLException e) {
             e.printStackTrace();
