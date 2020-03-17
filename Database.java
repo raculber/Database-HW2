@@ -301,7 +301,7 @@ public class Database {
         }
         catch (InputMismatchException e) {
             System.out.println("Invalid input");
-            return;
+            return; 
         }
         System.out.println("Enter the agent's zip:");
         try {
