@@ -122,6 +122,16 @@ public class Database {
         System.out.println("Please enter a city: ");
         city = in.nextLine();
         String query = "SELECT * FROM CLIENTS WHERE C_CITY = \'" + city + "\';";
+        //Check if city is in Database
+        try {
+            ResultSet resultSet = statement.executeQuery(query);
+            if (!resultSet.next()) {
+                System.out.println("City not found");
+                return;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
         query(query);
         query = "SELECT * FROM AGENTS WHERE A_CITY = \'" + city + "\';";
         query(query);
@@ -151,7 +161,19 @@ public class Database {
         System.out.println("Please enter the policy type: ");
         in.nextLine();
         type = in.nextLine();
-        int a_id = 0;
+        //Check if policy type is in Database 
+        try {
+            ResultSet resultSet = statement.executeQuery("SELECT * FROM POLICY WHERE " +
+            "TYPE = \''" + type + "\';");
+            if (!resultSet.next()) {
+                System.out.println("Policy type not found");
+                return;
+            }
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+        }
+        int a_id = -1;
         String query = "SELECT * FROM AGENTS WHERE A_CITY = \'" + city + "\';";
         try {
             ResultSet resultSet = statement.executeQuery(query);
@@ -160,6 +182,11 @@ public class Database {
             }
         } catch (SQLException e) {
             e.printStackTrace();
+        }
+        //Check if agent exists in Database (if not, a_id didn't change from -1)
+        if (a_id == -1) {
+            System.out.println("Agent not found in Database");
+            return;
         }
         query(query);
         int c_id = 0;
@@ -175,6 +202,18 @@ public class Database {
         query(query);
         System.out.println("Please enter the policy id: ");
         policyId = in.nextInt();
+        //Check if policy id exists in Database
+        try {
+            ResultSet resultSet = statement.executeQuery("SELECT * FROM POLICY " + 
+            "WHERE POLICY_ID = " + policyId + ";");
+            if (!resultSet.next()) {
+                System.out.println("Policy id not found in Database");
+                return;
+            }
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+        }
         System.out.println("Please enter the policy amount: ");
         amount = in.nextDouble();
         System.out.println("POLICIES_SOLD before insertion:");
@@ -203,6 +242,17 @@ public class Database {
         String query = "SELECT * FROM POLICIES_SOLD " + 
         "WHERE AGENT_ID = (SELECT A_ID FROM " + 
         "AGENTS WHERE A_NAME = \'" + name + "\');";
+        //Check if agent is in Database
+        try {
+            ResultSet resultSet = statement.executeQuery(query);
+            if (!resultSet.next()) {
+                System.out.println("Agent not found");
+                return;
+            }
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+        }
         query(query);
         query = "SELECT NAME, TYPE, COMMISSION_PERCENTAGE " + 
         "FROM POLICY " + 
@@ -220,6 +270,15 @@ public class Database {
         int id;
         System.out.println("Please enter the purchase id: ");
         id = in.nextInt();
+        query = "SELECT * FROM POLICIES_SOLD WHERE PURCHASE_ID = " + id + ";";
+        //Check if purchase id is in Database
+        try {
+            ResultSet resultSet = statement.executeQuery(query);
+            if (!resultSet.next()) {
+                System.out.println("Purchase id not found");
+                return;
+            }
+        }
         query = "DELETE FROM POLICIES_SOLD WHERE PURCHASE_ID = " + id + ";";
         try {
             statement.executeUpdate(query); 
