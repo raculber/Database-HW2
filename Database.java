@@ -164,7 +164,7 @@ public class Database {
         //Check if policy type is in Database 
         try {
             ResultSet resultSet = statement.executeQuery("SELECT * FROM POLICY WHERE " +
-            "TYPE = \''" + type + "\';");
+            "TYPE = \'" + type + "\';");
             if (!resultSet.next()) {
                 System.out.println("Policy type not found");
                 return;
