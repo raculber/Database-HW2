@@ -279,6 +279,9 @@ public class Database {
                 return;
             }
         }
+        catch (SQLException e) {
+            e.printStackTrace();
+        }
         query = "DELETE FROM POLICIES_SOLD WHERE PURCHASE_ID = " + id + ";";
         try {
             statement.executeUpdate(query); 
