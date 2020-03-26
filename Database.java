@@ -6,12 +6,12 @@ import java.util.Scanner;
 public class Database {
     private Connection connection;
     private Statement statement;
-
+    //Default constructor
     public Database() {
         connection = null;
         statement = null;
     }
-
+    //Connect to Database
     public void connect(String Username, String mysqlPassword) throws SQLException {
         try {
             connection = DriverManager.getConnection(
@@ -25,7 +25,7 @@ public class Database {
         connection.close();
         statement.close();
     }
-
+    //Execute query
     public void query(String q) {
         try {
             ResultSet resultSet = statement.executeQuery(q);
@@ -36,7 +36,7 @@ public class Database {
             e.printStackTrace();
         }
     }
-
+    //Print table
     public void print(ResultSet resultSet) throws SQLException {
         ResultSetMetaData metaData = resultSet.getMetaData();
         int numColumns = metaData.getColumnCount();
@@ -44,7 +44,7 @@ public class Database {
         printHeader(metaData, numColumns);
         printRecords(resultSet, numColumns);
     }
-
+    //Print columns
     public void printHeader(ResultSetMetaData metaData, int numColumns) throws SQLException {
         for (int i = 1; i <= numColumns; i++) {
             if (i > 1)
@@ -53,7 +53,7 @@ public class Database {
         }
         System.out.println();
     }
-
+    //Print rows
     public void printRecords(ResultSet resultSet, int numColumns) throws SQLException {
         String columnValue;
         while (resultSet.next()) {
@@ -75,7 +75,7 @@ public class Database {
             e.printStackTrace();
         }
     }
-
+    //Initialize Database
     public void initDatabase(String Username, String Password, String SchemaName) throws SQLException {
         statement = connection.createStatement();
         statement.executeUpdate("DELETE from POLICIES_SOLD");
@@ -121,6 +121,10 @@ public class Database {
         String city;
         System.out.println("Please enter a city: ");
         city = in.nextLine();
+        while (city.length() > 50) {
+            System.out.println("Invalid input, please enter a city: ");
+            city = in.nextLine();
+        }
         String query = "SELECT * FROM CLIENTS WHERE C_CITY = \'" + city + "\';";
         //Check if city is in Database
         try {
@@ -146,10 +150,22 @@ public class Database {
         query("SELECT * FROM CLIENTS;");
         System.out.println("Please enter your name: ");
         name = in.nextLine();
+        while (name.length() > 50) {
+            System.out.println("Invalid input, please enter your name: ");
+            name = in.nextLine();
+        }
         System.out.println("Please enter your city: ");
         city = in.nextLine();
+        while (city.length() > 50) {
+            System.out.println("Invalid input, please enter your city: ");
+            city = in.nextLine();
+        }
         System.out.println("Please enter your zip code: ");
         zip = in.nextInt();
+        while (zip < 0 || zip > 99999) {
+            System.out.println("Invalid input, please enter your zip code: ");
+            zip = in.nextInt();
+        }
         String values = "\'" + name + "\',\'" + city + "\'," + zip;
         try {
             statement.executeUpdate("INSERT INTO CLIENTS (C_NAME, C_CITY, C_ZIP) VALUES (" + values + ");");
@@ -161,6 +177,10 @@ public class Database {
         System.out.println("Please enter the policy type: ");
         in.nextLine();
         type = in.nextLine();
+        while (type.length() > 50) {
+            System.out.println("Invalid input, please enter the policy type: ");
+            type = in.nextLine();
+        }
         //Check if policy type is in Database 
         try {
             ResultSet resultSet = statement.executeQuery("SELECT * FROM POLICY WHERE " +
@@ -202,6 +222,10 @@ public class Database {
         query(query);
         System.out.println("Please enter the policy id: ");
         policyId = in.nextInt();
+        while (policyId < 0) {
+            System.out.println("Invalid input, please enter the policy id: ");
+            policyId = in.nextInt();
+        }
         //Check if policy id exists in Database
         try {
             ResultSet resultSet = statement.executeQuery("SELECT * FROM POLICY " + 
@@ -216,6 +240,10 @@ public class Database {
         }
         System.out.println("Please enter the policy amount: ");
         amount = in.nextDouble();
+        while (amount <= 0) {
+            System.out.println("Invalid input, please enter the policy amount: ");
+            amount = in.nextDouble();
+        }
         System.out.println("POLICIES_SOLD before insertion:");
         query("SELECT * FROM POLICIES_SOLD;");
         try {
@@ -237,11 +265,20 @@ public class Database {
         String name, city;
         System.out.println("Please enter the agent's name: ");
         name = in.nextLine();
+        while (name.length() > 50) {
+            System.out.println("Invalid input, please enter the agent's name: ");
+            name = in.nextLine();
+        }
         System.out.println("Please enter the agent's city: ");
-        city = in.nextLine();
+        city = in.nextLine();         
+        while (city.length() > 50) {
+            System.out.println("Invalid input, please enter the agent's city: ");
+            city = in.nextLine(); 
+        }
         String query = "SELECT * FROM POLICIES_SOLD " + 
         "WHERE AGENT_ID = (SELECT A_ID FROM " + 
-        "AGENTS WHERE A_NAME = \'" + name + "\');";
+        "AGENTS WHERE A_NAME = \'" + name + "\'" + 
+        " AND A_CITY = \'" + city + "\');";
         //Check if agent is in Database
         try {
             ResultSet resultSet = statement.executeQuery(query);
@@ -259,7 +296,8 @@ public class Database {
         "WHERE POLICY_ID IN (SELECT POLICY_ID FROM " +  
         "POLICIES_SOLD, AGENTS " + 
         "WHERE AGENT_ID = A_ID " + 
-        "AND A_NAME = \'" + name + "\');"; 
+        "AND A_NAME = \'" + name + "\' " +
+        "AND A_CITY = \'" + city + "\');"; 
         query(query);
     }
     //cancel a policy
@@ -270,6 +308,10 @@ public class Database {
         int id;
         System.out.println("Please enter the purchase id: ");
         id = in.nextInt();
+        while (id < 0) {
+            System.out.println("Invalid input, please enter the purchase id: ");
+            id = in.nextInt();
+        }
         query = "SELECT * FROM POLICIES_SOLD WHERE PURCHASE_ID = " + id + ";";
         //Check if purchase id is in Database
         try {
@@ -299,13 +341,29 @@ public class Database {
         String name, city;
         System.out.println("Please enter the agent's ID: ");
         id = in.nextInt();
+        while (id < 0) {
+            System.out.println("Invalid input, please enter the agent's ID:");
+            id = in.nextInt();
+        }
         System.out.println("Please enter the agent's name: ");
         in.nextLine();
         name = in.nextLine();
+        while (name.length() > 50) {
+            System.out.println("Invalid input, please enter the agent's name: ");
+            name = in.nextLine();
+        }
         System.out.println("Please enter the agent's city: ");
         city = in.nextLine();
+        while (city.length() > 50) {
+            System.out.println("Invalid input, please enter the agent's city: ");
+            city = in.nextLine();
+        }
         System.out.println("Please enter the agent's zip: ");
         zip = in.nextInt();
+        while (zip < 0 || zip > 99999) {
+            System.out.println("Invalid input, please enter the agent's zip: ");
+            zip = in.nextInt();
+        }
         System.out.println("Agent's in city before insertion: ");
         query("SELECT * FROM AGENTS WHERE A_CITY = \'" + city + "\';");
         String values = id + ",\'" + name + "\',\'" + city + "\'," + zip;
