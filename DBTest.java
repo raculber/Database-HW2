@@ -4,8 +4,8 @@ import java.util.Scanner;
 
 public class DBTest {
     public static void main(String[] args) throws SQLException {
-        String Username = "raculber";
-        String mysqlPassword = "aib2Oi5L";
+        String Username = "mvpanis";
+        String mysqlPassword = "";
         int choice = -1; 
         Scanner in = new Scanner(System.in);
         Database db = new Database();
