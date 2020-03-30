@@ -5,7 +5,7 @@ import java.util.Scanner;
 public class DBTest {
     public static void main(String[] args) throws SQLException {
         String Username = "mvpanis";
-        String mysqlPassword = "";
+        String mysqlPassword = "Iu8chie5";
         int choice = -1; 
         Scanner in = new Scanner(System.in);
         Database db = new Database();
