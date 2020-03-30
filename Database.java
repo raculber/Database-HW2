@@ -229,7 +229,7 @@ public class Database {
         //Check if policy id exists in Database
         try {
             ResultSet resultSet = statement.executeQuery("SELECT * FROM POLICY " + 
-            "WHERE POLICY_ID = " + policyId + ";");
+            "WHERE POLICY_ID = " + policyId + " AND TYPE = \'" + type + "\';");
             if (!resultSet.next()) {
                 System.out.println("Policy id not found in Database");
                 return;
@@ -360,7 +360,7 @@ public class Database {
         }
         System.out.println("Please enter the agent's zip: ");
         zip = in.nextInt();
-        while (zip < 0 || zip > 99999) {
+        while (zip > 99999 || zip < 10000) {
             System.out.println("Invalid input, please enter the agent's zip: ");
             zip = in.nextInt();
         }
