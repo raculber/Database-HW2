@@ -226,12 +226,12 @@ public class Database {
             System.out.println("Invalid input, please enter the policy id: ");
             policyId = in.nextInt();
         }
-        //Check if policy id exists in Database
+        //Check if policy exists in Database
         try {
             ResultSet resultSet = statement.executeQuery("SELECT * FROM POLICY " + 
             "WHERE POLICY_ID = " + policyId + " AND TYPE = \'" + type + "\';");
             if (!resultSet.next()) {
-                System.out.println("Policy id not found in Database");
+                System.out.println("Policy not found in Database");
                 return;
             }
         }
