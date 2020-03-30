@@ -162,7 +162,7 @@ public class Database {
         }
         System.out.println("Please enter your zip code: ");
         zip = in.nextInt();
-        while (zip < 0 || zip > 99999) {
+        while (zip < 10000 || zip > 99999) {
             System.out.println("Invalid input, please enter your zip code: ");
             zip = in.nextInt();
         }
